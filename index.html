@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>퀴즈퀴즈</title>
+    <style>
+    .exanswer{
+        background: gray;
+        width: 100%;
+        margin-bottom: 5px;
+        color: white;
+        padding-left: 30%
+    }
+    </style>
+</head>
+
+<body>
+    <h3>다음 그림에 가장 어울리는 글을 고르세요</h3>
+    <img id="live1" width="50" src="live.jpg">
+    <img id="live2" width="50" src="live.jpg">
+    <img id="live3" width="50" src="live.jpg">
+    <hr>
+    <img id="img" width="250" style="display:block;margin-left:auto;margin-right:auto;margin-bottom:5px">
+    <!-- <div><span>남은시간 : </span><span id="sec"></span></div> -->
+    <div class="exanswer" onclick="onClick(this)" id="0"></div>
+    <div class="exanswer" onclick="onClick(this)" id="1"></div>
+    <div class="exanswer" onclick="onClick(this)" id="2"></div>
+    <div class="exanswer" onclick="onClick(this)" id="3"></div>
+    <div class="exanswer" onclick="onClick(this)" id="4"></div>
+
+    <script>
+        let imgTag = document.getElementById('img')
+        let rand
+        let rightAnswer
+        let lastAnswers = []
+        let nowAnswers = []
+        let live = 3
+        let sec = document.getElementById("sec")
+        let today = new Date()
+        let name = ["머머리를 무시하는 사람들을 응징하는 정의의 빡빡이 암살자 아저씨", "품번박사 오박사(오늘의 품번은 뭘까아~요?)", "대신귀<br/>여운이<br/>브이를<br/>드리겠<br/>습니다", "제이름은 탐정! 코난이죠.", "밍밍이들", "시공레스토랑 수석쉐프", '"난 저렇게 살지 말아야지"에서 "저렇게"', "세상에서 가장 귀여운 생물",
+            "쌍빠따든 우혁", "팔생각은 안하고 자기과시'만'하는 치악산 당도높은 복숭아", "취향 안타는 친구들", "헬기", 'for(int i=5;i>=1;i--){<br/>&nbsp; &nbsp; &nbsp; &nbsp;for(j=1;j<=i;j++)<br/>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;printf("*");<br/>&nbsp; &nbsp; &nbsp; &nbsp;printf("&#47;&#110;")<br/>}'
+            , "울버린 절망편", "핑크 돼지", "3초후 욕쟁이", "하스스톤에도 찬조출연하신 지상 최고의 갓갓한 만화작가가 그린 귀여운 R-PAKA", "하는거 없는 주인공놈"]
+        function onClick(obj) {
+            if (obj.id == rightAnswer) {
+                alert("정답!")
+                if (lastAnswers.length == name.length)
+                    document.body.innerHTML = "축하드립니다! 모든 문제를 맞추셨습니다."
+                else
+                    setQuestion()
+            } else {
+                alert("오답!")
+                if (--live == 0)
+                    document.body.innerHTML = "점수 : " + lastAnswers.length + "/" + name.length
+                else {
+                    switch (live) {
+                        case 2:
+                            document.body.removeChild(document.getElementById('live1'))
+                            break;
+                        case 1:
+                             document.body.removeChild(document.getElementById('live2'))
+                            break;
+                    }
+                }
+                return
+            }
+
+            lastAnswers.push(rand)
+
+        }
+        function setQuestion() {
+            let check = 1
+            while (check == 1) {//질문 선택
+                rand = Math.floor(Math.random() * name.length)
+                check = 0
+                for (let i = 0; i < lastAnswers.length; i++)
+                    if (lastAnswers[i] == rand)
+                        check = 1
+            }
+            imgTag.src = rand + ".jpg"
+
+            rightAnswer = Math.floor(Math.random() * 5)
+
+            nowAnswers = []
+
+            for (let i = 0; i < 5; i++) {//예시 나타내기
+                if (i == rightAnswer) {
+                    document.getElementById(i).innerHTML = name[rand]
+                    nowAnswers.push(rand)
+                }
+                else {
+                    let newRand
+                    check = 1
+                    while (check == 1) {
+                        newRand = Math.floor(Math.random() * name.length)
+                        check = 0
+                        for (let j = 0; j < nowAnswers.length; j++)
+                            if (nowAnswers[j] == newRand || rand == newRand)
+                                check = 1
+                    }
+                    document.getElementById(i).innerHTML = name[newRand]
+                    nowAnswers.push(newRand)
+                }
+            }
+        }
+        setQuestion()
+    </script>
+</body>
+
+</html>
